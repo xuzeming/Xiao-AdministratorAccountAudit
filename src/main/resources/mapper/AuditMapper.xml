@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.SecuritiesSystem.mapper.AuditMapper" >
+	
+	<!-- 获取用户基础信息 -->
+	<select id="getVideoPath" resultMap="BaseInfo">
+		
+	</select>
+
+	<!-- 获取用户视频信息 -->
+	<select id="getVideoPath" resultType="UserBaseInfo">
+		select view_name viewName from user_base_info where user_id=#{id}
+	</select>
+
+	<!-- 通过审核 -->
+	<update id="pass" >
+		UPDATE status_info SET 
+		<if test="_parameter == 'identity'.toString()">identity_audit=1</if>
+		<if test="_parameter == 'info'.toString()">info_audit=1</if>
+		<if test="_parameter == 'view'.toString()">view_audit=1</if>
+	</update>
+	<!-- 不通过审核 -->
+	<update id="passNot" >
+		UPDATE status_info SET 
+		<if test="_parameter == 'identity'.toString()">identity_audit=2</if>
+		<if test="_parameter == 'info'.toString()">info_audit=2</if>
+		<if test="_parameter == 'view'.toString()">view_audit=2</if>
+	</update>
+	<!-- 获取用户个人身份信息 -->
+	<select id="getIdentificationInfo" resultType="UserIdentification">
+		SELECT IDENTIFICATION_ID identificationId,
+		       USER_ID userId,
+		       USER_NAME userName ,
+		       USER_SEX userSex,
+		       USER_NATION userNation,
+		       USER_ADDRESS userAddress,
+		       SIGN_AGENCY signAgency,
+		       START_TIME startTime,
+		       END_TIME endTime,
+		       FRONT_IMG frontImg,
+		       BACK_IMG backImg,
+		       USER_BIRTHDAY userBirthday
+		  FROM USER_IDENTIFICATION
+		 WHERE USER_ID = #{id}
+	</select>
+	<!-- 查询数据数量 -->
+	<select id="count" parameterType="PageData" resultType="int">
+		select count(a.identification_id)
+    		from (select identification_id,user_id,user_name
+    				from user_identification
+    			   <include refid="where_sql1"/>)a
+    			   inner join
+    			 (select open_status_id,user_id,identity_audit,info_audit,view_audit,submit_time
+    			    from status_info
+    			   <include refid="where_sql2"/>)b
+    			   on a.user_id = b.user_id
+	</select>
+	
+	<resultMap type="UserIdentification" id="UserCenter">
+		<id column="identification_id" property="identificationId"/>
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<association property="statusInfo" javaType="StatusInfo" >
+			<id column="open_status_id" property="openStatusId"/>
+			<result column="identity_audit" property="identityAudit"/>
+			<result column="info_audit" property="infoAudit"/>
+			<result column="view_audit" property="viewAudit"/>
+			<result column="submit_time" property="submitTime"/>
+		</association>
+	</resultMap>
+	<!-- 查询数据 -->
+	<select id="getDatas" parameterType="PageData" resultMap="UserCenter">
+    	select a.identification_id,a.user_id,a.user_name,b.open_status_id,b.identity_audit,b.info_audit,b.view_audit,b.submit_time
+    		from (select identification_id,user_id,user_name
+    				from user_identification
+    			   <include refid="where_sql1"/>)a
+    			   inner join
+    			 (select open_status_id,user_id,identity_audit,info_audit,view_audit,submit_time
+    			    from status_info
+    			   <include refid="where_sql2"/>)b
+    			   on a.user_id = b.user_id         
+	</select>
+	
+	<sql id="where_sql1">
+		<where>
+				and 1=1
+			<if test="User_Id != '' and User_Id != null">
+				and User_ID = #{User_Id}
+			</if>
+			<if test="User_Name != '' and User_Name != null">
+				and User_Name = #{User_Name}
+			</if>
+		</where>
+	</sql>
+	<sql id="where_sql2">
+		<where>
+				and 1=1
+			<if test="Identity_Audit != -1">
+				and identity_audit = #{Identity_Audit}
+			</if>
+			<if test="Info_Audit != -1">
+				and info_audit = #{Info_Audit}
+			</if>
+			<if test="View_Audit != -1">
+				and view_audit = #{View_Audit}
+			</if>
+			<if test="Start_Submitdate != '' and Start_Submitdate != null">
+				and submit_time &gt;= #{Start_Submitdate}
+			</if>
+			<if test="End_Submitdate != '' and End_Submitdate != null">
+				and submit_time &lt;= #{End_Submitdate}
+			</if>
+		</where>
+	</sql>
+
+</mapper>

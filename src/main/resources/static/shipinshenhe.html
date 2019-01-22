@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>视频审核</title>
+<link rel="stylesheet"
+	href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/VideoUpload.css">
+<script src="../jquery.min.js"></script>
+<script src="../bootstrap.min.js"></script>
+<!--引入js-->
+<script src="videoUpload.js"></script>
+<script src="http://localhost:8080/lib/vue.js"></script>
+<script src="http://localhost:8080/lib/vue-resource.js"></script>
+<script src="http://localhost:8080/main/getUrlParam.js"></script>
+
+</head>
+<body>
+<div id="app">
+	<div class="" style="text-align: center; margin-top: 50px;">
+		<span class="glyphicon glyphicon-send  " aria-hidden="true"
+			style="font-size: 30px; font-style: revert">视频审核</span>
+	</div>
+
+	<div id="videoContent">
+		<video class="videoPath" :src="'http://localhost:8080/video/'+videoPath"
+			width="320" height="240" controls>
+			<!--<source class="videoPath" src="" type="video/mp4">
+            <source class="videoPath" src="" type="video/ogg">
+            <source  class="videoPath" src="" type="video/webm">
+            <object class="videoPath" data="" width="320" height="240">
+                <embed  class="videoPath" src="" width="320" height="240">
+            </object>-->
+		</video>
+	</div>
+	<form role="form" class="form-group" id="frm">
+		<div class="form-group">
+			<button @click="pass(1,'view')" type="button"
+				class="btn btn-primary col-md-3 ">通过</button>
+			<button @click="pass(2,'view')" type="button"
+				class="btn btn-success col-md-3 col-sm-offset-1">不通过</button>
+		</div>
+	</form>
+	<!--最下方的导航栏-->
+	<nav class="navbar navbar-default navbar-fixed-bottom"
+		role="navigation">
+		<ol class="breadcrumb">
+			<li><a>Home</a> <a>Libation</a> <a>Data</a></li>
+		</ol>
+	</nav>
+</div>	
+</body>
+<script src="http://localhost:8080/main/spsh.js"></script>
+</html>

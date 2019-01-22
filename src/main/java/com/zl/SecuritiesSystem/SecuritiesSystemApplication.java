@@ -9,8 +9,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@MapperScan("com.zl.mapper")
-@ComponentScan(basePackages="com.zl")
+@MapperScan("com.zl.SecuritiesSystem.mapper")
+@ComponentScan(basePackages="com.zl.SecuritiesSystem")
 public class SecuritiesSystemApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication.run(SecuritiesSystemApplication.class, args);
