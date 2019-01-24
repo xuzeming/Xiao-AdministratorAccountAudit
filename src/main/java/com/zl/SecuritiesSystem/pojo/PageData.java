@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class PageData implements Serializable {
 	
 	private static final long serialVersionUID = 6343957201568465110L;
@@ -15,9 +17,11 @@ public class PageData implements Serializable {
 	private String User_Name;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date Start_Submitdate;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date End_Submitdate;
 	
 	private Integer Identity_Audit;
@@ -28,22 +32,24 @@ public class PageData implements Serializable {
 	
 	private Integer pageIndex = 1;
 	
-	private Integer pageSize = 1;
+	private Integer pageSize = 5;
 	
 	private Integer totalCount;
 	
+	private Integer totalPage;
+
 	private Integer start;
 	
 	private Integer end;
 	
 	private List<UserIdentification> userIdentifications;
-	
+
 	public String getUser_Id() {
 		return User_Id;
 	}
 
 	public void setUser_Id(String user_Id) {
-		User_Id = user_Id;
+		this.User_Id = user_Id;
 	}
 
 	public String getUser_Name() {
@@ -51,7 +57,7 @@ public class PageData implements Serializable {
 	}
 
 	public void setUser_Name(String user_Name) {
-		User_Name = user_Name;
+		this.User_Name = user_Name;
 	}
 
 	public Date getStart_Submitdate() {
@@ -59,7 +65,7 @@ public class PageData implements Serializable {
 	}
 
 	public void setStart_Submitdate(Date start_Submitdate) {
-		Start_Submitdate = start_Submitdate;
+		this.Start_Submitdate = start_Submitdate;
 	}
 
 	public Date getEnd_Submitdate() {
@@ -67,7 +73,7 @@ public class PageData implements Serializable {
 	}
 
 	public void setEnd_Submitdate(Date end_Submitdate) {
-		End_Submitdate = end_Submitdate;
+		this.End_Submitdate = end_Submitdate;
 	}
 
 	public Integer getIdentity_Audit() {
@@ -75,7 +81,7 @@ public class PageData implements Serializable {
 	}
 
 	public void setIdentity_Audit(Integer identity_Audit) {
-		Identity_Audit = identity_Audit;
+		this.Identity_Audit = identity_Audit;
 	}
 
 	public Integer getInfo_Audit() {
@@ -83,7 +89,7 @@ public class PageData implements Serializable {
 	}
 
 	public void setInfo_Audit(Integer info_Audit) {
-		Info_Audit = info_Audit;
+		this.Info_Audit = info_Audit;
 	}
 
 	public Integer getView_Audit() {
@@ -91,7 +97,7 @@ public class PageData implements Serializable {
 	}
 
 	public void setView_Audit(Integer view_Audit) {
-		View_Audit = view_Audit;
+		this.View_Audit = view_Audit;
 	}
 
 	public Integer getPageIndex() {
@@ -118,8 +124,16 @@ public class PageData implements Serializable {
 		this.totalCount = totalCount;
 	}
 
+	public Integer getTotalPage() {
+		return totalPage;
+	}
+
+	public void setTotalPage(Integer totalPage) {
+		this.totalPage = totalPage;
+	}
+
 	public Integer getStart() {
-		return (pageIndex-1)*pageSize;
+		return (pageIndex-1)*pageSize+1;
 	}
 
 	public Integer getEnd() {
@@ -139,8 +153,9 @@ public class PageData implements Serializable {
 		return "PageData [User_Id=" + User_Id + ", User_Name=" + User_Name + ", Start_Submitdate=" + Start_Submitdate
 				+ ", End_Submitdate=" + End_Submitdate + ", Identity_Audit=" + Identity_Audit + ", Info_Audit="
 				+ Info_Audit + ", View_Audit=" + View_Audit + ", pageIndex=" + pageIndex + ", pageSize=" + pageSize
-				+ ", totalCount=" + totalCount + ", start=" + start + ", end=" + end + ", userIdentifications="
-				+ userIdentifications + "]";
+				+ ", totalCount=" + totalCount + ", totalPage=" + totalPage + ", start=" + start + ", end=" + end
+				+ ", userIdentifications=" + userIdentifications + "]";
 	}
-
+	
+	
 }

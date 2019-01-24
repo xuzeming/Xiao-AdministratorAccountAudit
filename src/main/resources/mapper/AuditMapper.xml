@@ -3,10 +3,73 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zl.SecuritiesSystem.mapper.AuditMapper" >
+
+	<!-- 更改开户状态 -->
+	<update id="openAcount">
+		update status_info SET open_account=1 WHERE user_id=#{id}
+	</update>
+	<!-- 插入开户账号 -->
+	<update id="insertAcount">
+		update user_account set account_num=SQ_ACCOUNT_NUM.nextval where user_id=#{1}
+	</update>
+	
+	<resultMap type="ContactInfo" id="contact">
+		<id column="user_id" property="userId"/>
+		<result column="email" property="email"/>
+		<result column="zip_code" property="zipCode"/>
+		<result column="work_phone" property="workPhone"/>
+		<result column="fax" property="fax"/>
+		<result column="contect_address" property="contectAddress"/>
+		<result column="work_address" property="workAddress"/>
+		<result column="com_address" property="comAddress"/>
+		<association property="userBaseInfo" javaType="UserBaseInfo">
+			<id column="base_id" property="baseId"/>
+			<result column="user_industry" property="userIndustry"/>
+			<result column="user_profession" property="userProfession"/>
+			<result column="account_beneficiary" property="accountBeneficiary"/>
+			<result column="account_controller" property="accountController"/>
+			<result column="bad_record" property="badRecord"/>
+			<result column="vehicle" property="vehicle"/>
+			<result column="marital_status" property="maritalStatus"/>
+			<result column="user_education" property="userEducation"/>
+			<result column="tel_num" property="telNum"/>
+		</association>
+		<association property="userIdentification" javaType="UserIdentification">
+			<id column="identification_id" property="identificationId"/>
+			<result column="user_name" property="userName"/>
+			<result column="user_nation" property="userNation"/>
+		</association>
+		<association property="userCenters" javaType="UserCenters">
+			<id column="u" property="userId"/>
+			<result column="account_num" property="accountNum"/>
+		</association>
+		<association property="bankCard" javaType="BankCard">
+			<id column="card_id" property="cardId"/>
+			<result column="card_num" property="cardNum"/>
+		</association>
+	</resultMap>
 	
 	<!-- 获取用户基础信息 -->
-	<select id="getVideoPath" resultMap="BaseInfo">
-		
+	<select id="getInformation" resultMap="contact">
+		SELECT a.user_id,a.email,a.zip_code,a.work_phone,a.fax,a.contect_address,a.work_address,a.com_address,
+	      b.base_id,b.user_industry,b.user_profession,b.account_beneficiary,b.account_controller,
+	      b.bad_record,b.vehicle,b.marital_status,b.user_education,b.tel_num,
+	      c.identification_id,c.user_name,c.user_nation,
+	      d.user_id u,d.account_num,
+	      e.card_id,e.card_num FROM 
+	      
+	      (SELECT user_id,email,zip_code,work_phone,fax,contect_address,work_address,com_address 
+	      FROM contact_info WHERE user_id=#{id}) a,
+	      
+	      (SELECT base_id,user_industry,user_profession,account_beneficiary,account_controller,
+	      bad_record,vehicle,marital_status,user_education,tel_num FROM user_base_info WHERE user_id=#{id}) b,
+	      
+	      (SELECT identification_id,user_name,user_nation FROM user_identification WHERE user_id=#{id}) c,
+	      
+	      (SELECT user_id,account_num FROM User_Centers WHERE user_id=#{id}) d,
+	      
+	      (SELECT card_id,card_num FROM bank_card  
+	      WHERE card_id=(SELECT card_id FROM User_Bank_Card WHERE user_id=#{id}))e
 	</select>
 
 	<!-- 获取用户视频信息 -->
@@ -15,19 +78,30 @@
 	</select>
 
 	<!-- 通过审核 -->
-	<update id="pass" >
-		UPDATE status_info SET 
-		<if test="_parameter == 'identity'.toString()">identity_audit=1</if>
-		<if test="_parameter == 'info'.toString()">info_audit=1</if>
-		<if test="_parameter == 'view'.toString()">view_audit=1</if>
+	<update id="passIdentity" >
+		UPDATE status_info SET identity_audit=1 where user_id = #{id}
+	</update>
+	<!-- 通过审核 -->
+	<update id="passInfo" >
+		UPDATE status_info SET info_audit=1 where user_id = #{id}
+	</update>
+	<!-- 通过审核 -->
+	<update id="passView" >
+		UPDATE status_info SET view_audit=1 where user_id = #{id}
 	</update>
 	<!-- 不通过审核 -->
-	<update id="passNot" >
-		UPDATE status_info SET 
-		<if test="_parameter == 'identity'.toString()">identity_audit=2</if>
-		<if test="_parameter == 'info'.toString()">info_audit=2</if>
-		<if test="_parameter == 'view'.toString()">view_audit=2</if>
+	<update id="passNotIdentity" >
+		UPDATE status_info SET identity_audit=2 where user_id = #{id}
 	</update>
+	<!-- 不通过审核 -->
+	<update id="passNotInfo" >
+		UPDATE status_info SET info_audit=2 where user_id = #{id}
+	</update>
+	<!-- 不通过审核 -->
+	<update id="passNotView" >
+		UPDATE status_info SET view_audit=2 where user_id = #{id}
+	</update>
+	
 	<!-- 获取用户个人身份信息 -->
 	<select id="getIdentificationInfo" resultType="UserIdentification">
 		SELECT IDENTIFICATION_ID identificationId,
@@ -67,20 +141,24 @@
 			<result column="identity_audit" property="identityAudit"/>
 			<result column="info_audit" property="infoAudit"/>
 			<result column="view_audit" property="viewAudit"/>
+			<result column="open_account" property="openAccount"/>
 			<result column="submit_time" property="submitTime"/>
 		</association>
 	</resultMap>
 	<!-- 查询数据 -->
 	<select id="getDatas" parameterType="PageData" resultMap="UserCenter">
-    	select a.identification_id,a.user_id,a.user_name,b.open_status_id,b.identity_audit,b.info_audit,b.view_audit,b.submit_time
+	select c.identification_id,c.user_id,c.user_name,c.open_status_id,c.identity_audit,c.info_audit,c.view_audit,c.open_account,c.submit_time
+		from
+    	(select a.identification_id,a.user_id,a.user_name,b.open_status_id,b.identity_audit,b.info_audit,b.view_audit,b.open_account,b.submit_time,rownum rn
     		from (select identification_id,user_id,user_name
     				from user_identification
     			   <include refid="where_sql1"/>)a
     			   inner join
-    			 (select open_status_id,user_id,identity_audit,info_audit,view_audit,submit_time
+    			 (select open_status_id,user_id,identity_audit,info_audit,view_audit,open_account,submit_time
     			    from status_info
     			   <include refid="where_sql2"/>)b
-    			   on a.user_id = b.user_id         
+    			   on a.user_id = b.user_id ) c
+		where rn &gt;= #{start} and rn &lt;= #{end}    			           
 	</select>
 	
 	<sql id="where_sql1">
@@ -106,10 +184,10 @@
 			<if test="View_Audit != -1">
 				and view_audit = #{View_Audit}
 			</if>
-			<if test="Start_Submitdate != '' and Start_Submitdate != null">
+			<if test="Start_Submitdate != null">
 				and submit_time &gt;= #{Start_Submitdate}
 			</if>
-			<if test="End_Submitdate != '' and End_Submitdate != null">
+			<if test="End_Submitdate != null">
 				and submit_time &lt;= #{End_Submitdate}
 			</if>
 		</where>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-cn">
 <head>
 <meta charset="UTF-8">
 <title></title>
 <link type="text/css" rel="stylesheet"
 	href="http://cdn.staticfile.org/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
 
-<script src="http://localhost:8080/lib/vue.js"></script>
-<script src="http://localhost:8080/lib/vue-resource.js"></script>
-<script src="http://localhost:8080/main/getUrlParam.js"></script>	
+<script src="http://10.1.13.18:8080/lib/vue.js"></script>
+<script src="http://10.1.13.18:8080/lib/vue-resource.js"></script>
+<script src="http://10.1.13.18:8080/main/getUrlParam.js"></script>	
 
 <style>
 table {
@@ -100,10 +100,10 @@ option {
 		<img :src="'http://10.1.13.155:8080/'+identification.backImg" style="margin-left: 40%;" /> -->
 	</div>
 	<div style="width: 300px; margin: auto;">
-		<input @click="pass(1,'identity')" type="button" value="通过" /> 
-		<input @click="pass(2,'identity')" type="button" value="不通过" style="margin-left: 50%; margin-top: 50px;" />
+		<input @click="pass(1)" type="button" value="通过" /> 
+		<input @click="pass(2)" type="button" value="不通过" style="margin-left: 50%; margin-top: 50px;" />
 	</div>
 </div>
 </body>
-<script src="http://localhost:8080/main/sfzsh.js"></script>
+<script src="http://10.1.13.18:8080/main/sfzsh.js"></script>
 </html>

@@ -2,6 +2,10 @@ package com.zl.SecuritiesSystem.pojo;
 
 import java.io.Serializable;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class StatusInfo implements Serializable {
     /**
 	 * 
@@ -20,6 +24,8 @@ public class StatusInfo implements Serializable {
 
     private Integer openAccount;
 
+    @DateTimeFormat(pattern="yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd")
     private String submitTime;
 
     private String a2;

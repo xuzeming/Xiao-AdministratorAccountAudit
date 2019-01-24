@@ -36,9 +36,9 @@ public class UserBaseInfo implements Serializable {
 
     private String userEducation;
 
-    private String a2;
+    private String maritalStatus;
 
-    private String a3;
+    private String vehicle;
 
     private String a4;
 
@@ -156,23 +156,23 @@ public class UserBaseInfo implements Serializable {
         this.userEducation = userEducation == null ? null : userEducation.trim();
     }
 
-    public String getA2() {
-        return a2;
-    }
+    public String getMaritalStatus() {
+		return maritalStatus;
+	}
 
-    public void setA2(String a2) {
-        this.a2 = a2 == null ? null : a2.trim();
-    }
+	public void setMaritalStatus(String maritalStatus) {
+		this.maritalStatus = maritalStatus;
+	}
 
-    public String getA3() {
-        return a3;
-    }
+	public String getVehicle() {
+		return vehicle;
+	}
 
-    public void setA3(String a3) {
-        this.a3 = a3 == null ? null : a3.trim();
-    }
+	public void setVehicle(String vehicle) {
+		this.vehicle = vehicle;
+	}
 
-    public String getA4() {
+	public String getA4() {
         return a4;
     }
 
@@ -194,8 +194,8 @@ public class UserBaseInfo implements Serializable {
 				+ ", userProfession=" + userProfession + ", accountBeneficiary=" + accountBeneficiary
 				+ ", accountController=" + accountController + ", badRecord=" + badRecord + ", taxStatus=" + taxStatus
 				+ ", viewName=" + viewName + ", telNum=" + telNum + ", riskScore=" + riskScore + ", contactAddress="
-				+ contactAddress + ", zipCode=" + zipCode + ", userEducation=" + userEducation + ", a2=" + a2 + ", a3="
-				+ a3 + ", a4=" + a4 + ", a5=" + a5 + "]";
+				+ contactAddress + ", zipCode=" + zipCode + ", userEducation=" + userEducation + ", maritalStatus="
+				+ maritalStatus + ", vehicle=" + vehicle + ", a4=" + a4 + ", a5=" + a5 + "]";
 	}
-    
+
 }

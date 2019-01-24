@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zl.SecuritiesSystem.pojo.BaseInfo;
+import com.zl.SecuritiesSystem.pojo.ContactInfo;
 import com.zl.SecuritiesSystem.pojo.PageData;
 import com.zl.SecuritiesSystem.pojo.UserBaseInfo;
 import com.zl.SecuritiesSystem.pojo.UserIdentification;
@@ -17,12 +17,19 @@ public class AuditController {
 	@Autowired
 	IAuditService auditServiceImpl;
 	
+	//用户
+	@GetMapping("/openAcount.action")
+	public String openAcount(String id) throws SQLException {
+System.err.println(id);
+		auditServiceImpl.openAcount(id);
+		return "ok";
+	}
+	
 	//用户审核数据
-	@GetMapping("/getDatas")
+	@GetMapping("/getDatas.action")
 	public PageData getDatas(PageData pageData) throws SQLException {
-System.err.println("------"+pageData);
+System.err.println("--"+pageData);		
 		PageData datas = auditServiceImpl.getDatas(pageData);
-System.err.println("======"+datas);
 		return datas;
 	}
 	
@@ -30,15 +37,15 @@ System.err.println("======"+datas);
 	@GetMapping("/getIdentificationInfo.action")
 	public UserIdentification getIdentificationInfo(String id) throws SQLException {
 		UserIdentification datas =  auditServiceImpl.getIdentificationInfo(id);
-		System.err.println("==="+datas);
 		return datas;
 	}
 	
 	//获取用户基础信息
 	@GetMapping("/getInformation.action")
-	public BaseInfo getInformation(String id) throws SQLException {
-		BaseInfo datas =  auditServiceImpl.getInformation(id);
-		System.err.println("==="+datas);
+	public ContactInfo getInformation(String id) throws SQLException {
+System.err.println("1111"+id);
+		ContactInfo datas =  auditServiceImpl.getInformation(id);
+System.err.println(datas);		
 		return datas;
 	}
 	
@@ -46,16 +53,15 @@ System.err.println("======"+datas);
 	@GetMapping("/getVideoPath.action")
 	public String getVideoPath(String id) throws SQLException {
 		UserBaseInfo datas =  auditServiceImpl.getVideoPath(id);
-		System.err.println("==="+datas);
 		String viewPathString = datas.getViewName();
-		System.err.println(viewPathString);
 		return viewPathString;
 	}
 	
 	//修改审核状态
 	@GetMapping("/pass.action")
-	public String pass(String flag, String identity) throws SQLException {
-		auditServiceImpl.pass(flag,identity);
+	public String pass(String flag, String identity, String id) throws SQLException {
+System.err.println("标志:"+flag+"  内容: "+identity+"  id:"+id);
+		auditServiceImpl.pass(flag,identity,id);
 		return "ok";
 	}
 	

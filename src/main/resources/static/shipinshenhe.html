@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 <head>
 <meta charset="UTF-8">
 <title>视频审核</title>
@@ -10,9 +10,9 @@
 <script src="../bootstrap.min.js"></script>
 <!--引入js-->
 <script src="videoUpload.js"></script>
-<script src="http://localhost:8080/lib/vue.js"></script>
-<script src="http://localhost:8080/lib/vue-resource.js"></script>
-<script src="http://localhost:8080/main/getUrlParam.js"></script>
+<script src="http://10.1.13.18:8080/lib/vue.js"></script>
+<script src="http://10.1.13.18:8080/lib/vue-resource.js"></script>
+<script src="http://10.1.13.18:8080/main/getUrlParam.js"></script>
 
 </head>
 <body>
@@ -23,7 +23,7 @@
 	</div>
 
 	<div id="videoContent">
-		<video class="videoPath" :src="'http://localhost:8080/video/'+videoPath"
+		<video class="videoPath" :src="'http://10.1.13.18:8080/video/'+videoPath"
 			width="320" height="240" controls>
 			<!--<source class="videoPath" src="" type="video/mp4">
             <source class="videoPath" src="" type="video/ogg">
@@ -35,9 +35,9 @@
 	</div>
 	<form role="form" class="form-group" id="frm">
 		<div class="form-group">
-			<button @click="pass(1,'view')" type="button"
+			<button @click="pass(1)" type="button"
 				class="btn btn-primary col-md-3 ">通过</button>
-			<button @click="pass(2,'view')" type="button"
+			<button @click="pass(2)" type="button"
 				class="btn btn-success col-md-3 col-sm-offset-1">不通过</button>
 		</div>
 	</form>
@@ -50,5 +50,5 @@
 	</nav>
 </div>	
 </body>
-<script src="http://localhost:8080/main/spsh.js"></script>
+<script src="http://10.1.13.18:8080/main/spsh.js"></script>
 </html>
